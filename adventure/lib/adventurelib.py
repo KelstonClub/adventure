@@ -1,5 +1,7 @@
 import os, sys
 import collections
+import json
+import pickle
 from pprint import pprint
 
 import openpyxl
@@ -35,25 +37,58 @@ class Item(Base):
         self.initial_location = initial_location
         self.initial_sublocation = initial_sublocation
 
+    def as_dict(self):
+        return dict(
+            weight=self.weight,
+            description=self.description,
+            initial_location=self.initial_location,
+            initial_sublocation=self.initial_sublocation
+        )
+
+
 class Room(Base):
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, is_initial):
         super().__init__(name)
         self.description = description
         self.exits = dict()
+        self.is_initial = (is_initial == "Yes")
+
+    def as_dict(self):
+        return dict(
+            description=self.description,
+            exits=[(direction, room.name) for (direction, room) in self.exits.items()]
+        )
+
+class Actor(Base):
+
+    def __init__(self, name, score=10):
+        super().__init__(name)
+        self.inventory = set()
+        self.score = score
+        self.location = None
+
+    def move_to(self, new_location):
+        self.location = new_location
+
+def adventure_from_pickle(filepath):
+    with open(filepath, "rb") as f:
+        return pickle.load(f)
 
 class Adventure(object):
 
-    def __init__(self, name):
+    def __init__(self, name, player_name):
         """Set up an adventure from details in a spreadsheet
         """
         self.name = name
+        self.player = Actor(player_name)
 
     def load_from_saved_game(self, filepath):
         raise NotImplementedError
 
     def save_game(self, filepath):
-        raise NotImplementedError
+        with open(filepath, "wb") as f:
+            pickle.dump(self, f)
 
     def load_initial_game_from_spreadsheet(self, filepath):
         """Load the rooms, layout and items from a spreadsheet
@@ -66,6 +101,10 @@ class Adventure(object):
                 for direction, neighbour in layout[name].items():
                     room.exits[direction] = self.rooms[neighbour]
             self.inventory = self.get_inventory(wb)
+
+            for room in self.rooms.values():
+                if room.is_initial:
+                    self.actor.move_to(room)
         finally:
             wb.close()
 
