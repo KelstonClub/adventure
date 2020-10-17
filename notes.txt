@@ -1,0 +1,3 @@
+* Overall structure (diagram - JS)
+* Code structure (modules / packages)
+* Sketch out modules / packages
