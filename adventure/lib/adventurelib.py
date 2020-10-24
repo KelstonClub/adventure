@@ -32,7 +32,7 @@ class Adventure(base.Base):
                 self.player.move_to(room)
 
     def handle_user_command(self, command):
-        raise NotImplementedError
+        return self.player
 
     def handle_system_command(self, command):
         raise NotImplementedError
