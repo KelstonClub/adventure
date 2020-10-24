@@ -1,2 +1,4 @@
-def run(*args, **kwargs):
-    print(args, kwargs)
+def run(adventure):
+    while True:
+        command = input("What now? ")
+        result = adventure.handle_command("user", command)

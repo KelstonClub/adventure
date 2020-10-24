@@ -29,11 +29,22 @@ class Adventure(base.Base):
             if room.is_initial:
                 self.player.move_to(room)
 
-    def run(self):
-        print("Rooms:")
-        for name, room in adventure.rooms.items():
-            print(name)
-            for direction, room in room.exits.items():
-                print("  ", direction, "=>", room)
-        print("Item:")
-        pprint(adventure.inventory)
+    def handle_user_command(self, command):
+        raise NotImplementedError
+
+    def handle_system_command(self, command):
+        raise NotImplementedError
+
+    def handle_command(self, type, command):
+        """Commands come in two types:
+
+        1) a user command which is something the user types in (eg GO NORTH)
+        2) a system command which is the ui asking the backend for something
+        """
+        if type == "user":
+            return self.handle_user_command(command)
+        elif type == "system":
+            return self.handle_system_command(command)
+        else:
+            raise RuntimeError("Unknown command type %s" % type)
+
