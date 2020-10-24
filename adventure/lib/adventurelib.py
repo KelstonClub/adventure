@@ -18,6 +18,8 @@ class Adventure(base.Base):
         """
         super().__init__(name)
         self.player = data.Actor(player_name)
+        self.rooms = {}
+        self.inventory = {}
 
     def load_initial_game_from_spreadsheet(self, filepath=None):
         """Load the rooms, layout and items from a spreadsheet
