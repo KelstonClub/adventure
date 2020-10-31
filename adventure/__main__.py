@@ -18,7 +18,7 @@ class Runner(base.Base):
     def restart_game(self):
         xlsx_filepath = pathlib.Path(f"{self.adventure_name}.xlsx")
         game = importlib.import_module(".games.%s" % self.adventure_name, __package__)
-        adventure = game.Adventure(self.player_name)
+        adventure = game.Adventure(self.adventure_name, self.player_name)
         adventure.load_initial_game_from_spreadsheet(xlsx_filepath)
         return adventure
 
