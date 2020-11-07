@@ -9,6 +9,9 @@ class Item(base.DataBase):
         self.initial_location = initial_location
         self.initial_sublocation = initial_sublocation
     
+    def __repr__(self):
+        return "%s, %s" %(self.name, self.initial_location)
+    
     def __eq__(self, other):
         return self.name == other.name
         
@@ -23,6 +26,9 @@ class Room(base.DataBase):
         self.exits = dict()
         self.is_initial = (is_initial == "Yes")
         self.inventory = set()
+    
+    def __repr__(self):
+        return "%s, %s" %(self.name, self.inventory)
 
 class Actor(base.DataBase):
 
