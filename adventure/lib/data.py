@@ -8,7 +8,13 @@ class Item(base.DataBase):
         self.description = description
         self.initial_location = initial_location
         self.initial_sublocation = initial_sublocation
-
+    
+    def __eq__(self, other):
+        return self.name == other.name
+        
+    def __hash__(self):
+        return hash(self.name)
+    
 class Room(base.DataBase):
 
     def __init__(self, name, description, is_initial):
@@ -16,6 +22,7 @@ class Room(base.DataBase):
         self.description = description
         self.exits = dict()
         self.is_initial = (is_initial == "Yes")
+        self.inventory = set()
 
 class Actor(base.DataBase):
 
