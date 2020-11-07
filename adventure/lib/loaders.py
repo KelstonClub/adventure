@@ -70,7 +70,7 @@ def get_layout(wb):
 
 def get_inventory(wb):
     """Return a dictionary mapping inventory names to details"""
-    return dict((i.name, i) for i in sheet_to_namedtuples(wb, "Items", data.Item))
+    return dict((i.name.lower(), i) for i in sheet_to_namedtuples(wb, "Items", data.Item))
 
 def get_rooms(wb):
     """Return a dictionary mapping room names to details"""
