@@ -39,6 +39,9 @@ class Adventure(base.Base):
         for room in self.rooms.values():
             if room.is_initial:
                 self.player.move_to(room)
+    
+    def user_prompt(self):
+        return "What now? "
 
     def get_anlayse_command(self, command):
         verb, noun = command.lower().strip().split()
