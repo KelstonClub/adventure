@@ -31,6 +31,9 @@ class Adventure(base.Base):
             if room.is_initial:
                 self.player.move_to(room)
 
+    def user_prompt(self):
+        return "What now? "
+
     def handle_user_command(self, command):
         return self.player
 

@@ -1,5 +1,5 @@
 def run(adventure):
     while True:
-        command = input("What now? ")
+        command = input(adventure.user_prompt())
         result = adventure.handle_command("user", command)
         print(result)
