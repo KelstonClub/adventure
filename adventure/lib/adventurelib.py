@@ -21,7 +21,10 @@ class UnknownObjectError(Exception):
     pass
 
 class Adventure(base.Base):
-
+    
+    verbs = {"go", "get", "drop"}
+    syns = {"run" : "go", "move" : "go", "grab" : "get"}
+    
     def __init__(self, name, player_name):
         """Set up an adventure from details in a spreadsheet
         """
@@ -30,6 +33,13 @@ class Adventure(base.Base):
         self.rooms = {}
         self.inventory = {}
 
+    def get_verb(self, word):
+        found_word = self.syns.get(word, word)
+        if found_word in self.verbs:
+            return found_word
+        else:
+            raise RuntimeError("No hablo espanol")
+        
     def load_initial_game_from_spreadsheet(self, filepath=None):
         """Load the rooms, layout and items from a spreadsheet
         """
@@ -110,3 +120,7 @@ class Adventure(base.Base):
         else:
             raise RuntimeError("Unknown command type %s" % type)
 
+if __name__ == "__main__":
+    a = Adventure("Peter", "house")
+    print(a.get_verb("go"))
+    print(a.get_verb("move"))
